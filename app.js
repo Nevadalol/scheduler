@@ -10,25 +10,25 @@ new SchedulerView({
     // appointment, ms
     moveDelay: 150,
     fps: 1000/60,
+    weekCols: 1,
 
     startDate: new Date().getDate(),
 
     week: {
-      weeks: 1
+      dayCols: 3
     },
 
     day: {
-      days: 3
+      hourRows: 5,
     },
 
     hour: {
-      hours: 5,
+      minuteRows: 6,
       height: 120
     },
 
     minute: {
-      width: 259,
-      minutes: 6
+      width: 259
     },
 
     sidebar: {

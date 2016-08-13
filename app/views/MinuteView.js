@@ -10,9 +10,9 @@ export class MinuteView {
   render (minute) {
     this.ctx.beginPath();
 
-    // if it's not middle border,
+    // if it's not middle row,
     // draw it dotted
-    if (minute !== this.config.minute.minutes / 2) {
+    if (minute !== this.config.hour.minuteRows / 2) {
       this.ctx.setLineDash([1, 1]);
     }
 

@@ -29,7 +29,7 @@ export class CalendarView {
     this.el.appendChild(this.leftSidebarView.render().canvas);
 
     // render calendar greed
-    for (let week = 0; week < this.config.calendar.week.weeks; ++week) {
+    for (let week = 0; week < this.config.calendar.weekCols; ++week) {
       new WeekView(week).render();
     }
 

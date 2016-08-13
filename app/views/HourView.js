@@ -10,7 +10,7 @@ export class HourView {
   }
 
   render () {
-    //this.renderBorder();
+    this.renderBorder();
     this.renderMinutes();
   }
 
@@ -26,7 +26,7 @@ export class HourView {
   }
 
   renderMinutes () {
-    for (var minute = 1; minute <= this.config.minute.minutes; ++minute) {
+    for (var minute = 1; minute <= this.config.hour.minuteRows; ++minute) {
       // save initial translate position
       this.ctx.save();
 

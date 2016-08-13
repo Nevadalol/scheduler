@@ -19,7 +19,7 @@ export class SidebarView {
     this.ctx.beginPath();
 
     this.ctx.strokeStyle = this.config.style.sidebar.borderColor;
-    this.ctx.rect(0, 0, this.config.sidebar.width, this.config.hour.hours * this.config.hour.height);
+    this.ctx.rect(0, 0, this.config.sidebar.width, this.config.day.hourRows * this.config.hour.height);
     this.ctx.stroke();
     this.renderHours();
 
@@ -27,16 +27,18 @@ export class SidebarView {
   }
 
   renderHours () {
-    for (var hour = 0; hour < this.config.hour.hours; hour++) {
-      this.ctx.beginPath();
+    this.ctx.strokeStyle = this.config.style.sidebar.borderColor;
+    this.ctx.fillStyle = this.config.style.sidebar.hourColor;
+    this.ctx.font = this.config.style.sidebar.font;
 
-      this.ctx.strokeStyle = this.config.style.sidebar.borderColor;
-      this.ctx.fillStyle = this.config.style.sidebar.hourColor;
+    for (var hour = 0; hour < this.config.day.hourRows; hour++) {
+      this.ctx.beginPath();
 
       this.ctx.moveTo(0, hour * this.config.hour.height + 0.5);
       this.ctx.lineTo(this.config.sidebar.width, hour * this.config.hour.height + 0.5);
       this.ctx.stroke();
-      this.renderText(hour, this.config.sidebar.width / 2, hour * this.config.hour.height + 15);
+
+      //this.renderHourText(hour);
       this.renderMinutes(hour);
 
       this.ctx.closePath();
@@ -52,19 +54,10 @@ export class SidebarView {
     this.ctx.strokeStyle = this.config.style.minute.borderColor;
     this.ctx.fillStyle = this.config.style.sidebar.minuteColor;
 
-    for (var minute = 1; minute <= this.config.minute.minutes; minute++) {
+    for (var minute = 1; minute <= this.config.hour.minuteRows; minute++) {
       this.ctx.moveTo(this.config.sidebar.width / 2, hour * this.config.hour.height + minute * this.config.minute.height + 0.5);
       this.ctx.lineTo(direction * this.config.sidebar.width, hour * this.config.hour.height + minute * this.config.minute.height + 0.5);
-
-      //TODO
-      // do smth with this if
-      if (minute !== this.config.minute.minutes) {
-        this.renderText(
-          (60 / this.config.minute.minutes * minute) % 60,
-          this.config.sidebar.width / 2,
-          hour * this.config.hour.height + minute * this.config.minute.height + 15
-        );
-      }
+      this.renderTime(hour, minute);
     }
 
     this.ctx.stroke();
@@ -72,14 +65,17 @@ export class SidebarView {
     this.ctx.closePath();
   }
 
-  renderText (text, x, y) {
-    this.ctx.font = this.config.style.sidebar.font;
-    this.ctx.fillText(text, x, y);
+  renderTime (hour, minute) {
+    this.ctx.fillText(
+      (60 / this.config.hour.minuteRows * minute) % 60,
+      this.config.sidebar.width / 2,
+      hour * this.config.hour.height + minute * this.config.minute.height + 15
+    );
   }
 
   createCanvas () {
     this.canvas = Canvas.create('sidebar.' + this.side, {
-      height: this.config.hour.hours * this.config.hour.height,
+      height: this.config.day.hourRows * this.config.hour.height,
       width: this.config.sidebar.width
     });
 

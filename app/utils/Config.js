@@ -6,11 +6,11 @@ export class Config {
   }
 
   static set (config) {
-    var minuteHeight = config.calendar.hour.height / config.calendar.minute.minutes;
+    var minuteHeight = config.calendar.hour.height / config.calendar.hour.minuteRows;
 
     config.calendar.minute.height = minuteHeight;
-    config.calendar.height = config.calendar.hour.hours * config.calendar.hour.height;
-    config.calendar.width = config.calendar.week.weeks * config.calendar.day.days * config.calendar.minute.width;
+    config.calendar.height = config.calendar.day.hourRows * config.calendar.hour.height;
+    config.calendar.width = config.calendar.weekCols * config.calendar.week.dayCols * config.calendar.minute.width;
 
     this.config = config;
 

@@ -6,7 +6,7 @@ export class Util {
         day = Math.floor(x / config.minute.width),
         hour = Math.floor(y / config.hour.height),
         minuteRow = Math.floor((y % config.hour.height) / config.minute.height),
-        minute = (60 / config.minute.minutes * minuteRow) % 60;
+        minute = (60 / config.hour.minuteRows * minuteRow) % 60;
 
     return {
       day: day + config.startDate,

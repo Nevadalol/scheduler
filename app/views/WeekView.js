@@ -10,7 +10,7 @@ export class WeekView {
   }
 
   render () {
-    for (var day = 0; day < this.config.day.days; ++day) {
+    for (var day = 0; day < this.config.week.dayCols; ++day) {
       // save initial translate position
       this.ctx.save();
 

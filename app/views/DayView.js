@@ -11,16 +11,16 @@ export class DayView {
 
   render () {
     this.renderHours();
-    //this.renderBorder();
+    this.renderBorder();
   }
 
   renderHours () {
-    for (var hour = 0; hour < this.config.hour.hours; ++hour) {
+    for (var hour = 0; hour < this.config.day.hourRows; ++hour) {
       // save initial translate position
       this.ctx.save();
 
       // set offset for minute
-      this.ctx.translate(0, this.config.minute.height * this.config.minute.minutes * hour);
+      this.ctx.translate(0, this.config.minute.height * this.config.hour.minuteRows * hour);
 
       // render hours
       this.hourView.render();
@@ -35,7 +35,7 @@ export class DayView {
 
     this.ctx.strokeStyle = this.config.style.day.borderColor;
     this.ctx.moveTo(this.config.minute.width + 0.5, 0);
-    this.ctx.lineTo(this.config.minute.width + 0.5, this.config.hour.hours * this.config.hour.height);
+    this.ctx.lineTo(this.config.minute.width + 0.5, this.config.day.hourRows * this.config.hour.height);
     this.ctx.stroke();
 
     this.ctx.closePath();
