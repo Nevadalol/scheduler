@@ -10,23 +10,14 @@ export class DayView {
   }
 
   render () {
-    this.renderHours();
     this.renderBorder();
+    this.renderHours();
+    
   }
 
   renderHours () {
     for (var hour = 0; hour < this.config.day.hourRows; ++hour) {
-      // save initial translate position
-      this.ctx.save();
-
-      // set offset for minute
-      this.ctx.translate(0.5, this.config.minute.height * this.config.hour.minuteRows * hour + 0.5);
-
-      // render hours
       this.hourView.render();
-
-      // restore initial translate position
-      this.ctx.restore();
     }
   }
 

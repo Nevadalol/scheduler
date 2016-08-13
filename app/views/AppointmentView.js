@@ -1,4 +1,5 @@
 import _ from '../../node_modules/underscore';
+import { AppointmentsCollection } from '../domain/AppointmentsCollection';
 import { Mediator } from '../utils/Mediator';
 import { Config } from '../utils/Config';
 import { Canvas } from '../utils/Canvas';
@@ -6,6 +7,7 @@ import { Util } from '../utils/Util';
 
 export class AppointmentView {
   constructor (params) {
+    this.collection = AppointmentsCollection.getInstance();
     this.config = Config.getInstance().calendar;
     this.ctx = Canvas.getCtx('calendar');
 
@@ -33,7 +35,7 @@ export class AppointmentView {
     }
 
     Mediator.publish('Calendar.renderWeek');
-    Mediator.publish('AppointmentsCollection.render');
+    _.invoke(this.collection.appointments, 'render');
   }
 
   onMousedown (e) {
@@ -59,7 +61,7 @@ export class AppointmentView {
     this.isMoving = false;
 
     Mediator.publish('Calendar.renderWeek');
-    Mediator.publish('AppointmentsCollection.render');
+    _.invoke(this.collection.appointments, 'render');
   }
 
   getMoveHandler () {

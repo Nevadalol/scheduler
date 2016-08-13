@@ -6,7 +6,6 @@ export class AppointmentsCollection {
   constructor () {
     this.appointments = [];
 
-    Mediator.subscribe('AppointmentsCollection.render', this.render, this);
     Mediator.subscribe('Appointment.add', this.add, this);
   }
 
@@ -18,9 +17,6 @@ export class AppointmentsCollection {
     return this.instance;
   }
 
-  render () {
-    _.invoke(this.appointments, 'render');
-  }
 
   add (appointments) {
     this.appointments = this.appointments.concat(

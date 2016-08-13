@@ -6,10 +6,9 @@ import { Config } from '../utils/Config';
 import { CalendarView } from './CalendarView';
 
 export class SchedulerView {
-  constructor (options) {
-    this.config = Config.set(options).getInstance();
-
+  constructor () {
     this.appointments = AppointmentsCollection.getInstance();
+    this.config = Config.getInstance();
     this.calendarView = new CalendarView();
     this.mouseEvents = new MouseEvents();
   }
@@ -24,7 +23,11 @@ export class SchedulerView {
 
     var today = new Date();
     today.setHours(1);
-    today.setMinutes(10)
+    today.setMinutes(10);
+
+    var t = new Date();
+    t.setHours(3);
+    t.setMinutes(20);
 
     // mock appointments
     var appointments = [{
@@ -34,6 +37,15 @@ export class SchedulerView {
       headerColor: '#1976D2',
       bodyColor: '#2196F3',
       timestamp: today,
+      // 1 hour 20 minutes
+      duration: 4800000
+    }, {
+      id: 2,
+      title: 'Title',
+      body: 'Body text here',
+      headerColor: '#1976D2',
+      bodyColor: '#2196F3',
+      timestamp: t,
       // 1 hour 20 minutes
       duration: 4800000
     }];
