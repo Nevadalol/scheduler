@@ -1,5 +1,5 @@
 import _ from '../../node_modules/underscore';
-import { Appointment } from './Appointment';
+import { AppointmentView } from '../views/AppointmentView';
 import { Mediator } from '../utils/Mediator';
 
 export class AppointmentsCollection {
@@ -29,7 +29,7 @@ export class AppointmentsCollection {
   }
 
   createAppointment (appointment) {
-    var instance = new Appointment(appointment);
+    var instance = new AppointmentView(appointment);
 
     _.defer(() => instance.render());
 

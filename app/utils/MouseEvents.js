@@ -1,8 +1,6 @@
 import { Mediator } from './Mediator';
 import { Config } from './Config';
 import { Canvas } from './Canvas';
-import { Util } from './Util';
-
 export class MouseEvents {
   constructor () {
     this.config = Config.getInstance();

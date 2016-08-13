@@ -4,7 +4,7 @@ import { Config } from '../utils/Config';
 import { Canvas } from '../utils/Canvas';
 import { Util } from '../utils/Util';
 
-export class Appointment {
+export class AppointmentView {
   constructor (params) {
     this.config = Config.getInstance().calendar;
     this.ctx = Canvas.getCtx('calendar');
@@ -49,10 +49,10 @@ export class Appointment {
     }
   }
 
-  onMouseup (coords) {
+  onMouseup (e) {
     if (this.hasMoved) {
       Mediator.publish('Appointment.moveStop', this.onMouseMove);
-      this.placeAppointment(coords);
+      this.placeAppointment({x: e.offsetX, y: e.offsetY});
       this.hasMoved = false;
     }
 

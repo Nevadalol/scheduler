@@ -17,8 +17,8 @@ export class MinuteView {
     }
 
     this.ctx.strokeStyle = this.config.style.minute.borderColor;
-    this.ctx.moveTo(0, 0.5);
-    this.ctx.lineTo(this.config.minute.width, 0.5);
+    this.ctx.moveTo(0, 0);
+    this.ctx.lineTo(this.config.minute.width, 0);
     this.ctx.stroke();
 
     this.ctx.setLineDash([]);

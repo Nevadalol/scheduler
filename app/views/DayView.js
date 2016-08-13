@@ -20,7 +20,7 @@ export class DayView {
       this.ctx.save();
 
       // set offset for minute
-      this.ctx.translate(0, this.config.minute.height * this.config.hour.minuteRows * hour);
+      this.ctx.translate(0.5, this.config.minute.height * this.config.hour.minuteRows * hour + 0.5);
 
       // render hours
       this.hourView.render();

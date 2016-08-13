@@ -18,8 +18,8 @@ export class HourView {
     this.ctx.beginPath();
 
     this.ctx.strokeStyle = this.config.style.hour.borderColor;
-    this.ctx.moveTo(0, 0.5);
-    this.ctx.lineTo(this.config.minute.width, 0.5);
+    this.ctx.moveTo(0, 0);
+    this.ctx.lineTo(this.config.minute.width, 0);
     this.ctx.stroke();
 
     this.ctx.closePath();
@@ -27,17 +27,12 @@ export class HourView {
 
   renderMinutes () {
     for (var minute = 1; minute <= this.config.hour.minuteRows; ++minute) {
-      // save initial translate position
-      this.ctx.save();
 
       // set offset for minute
-      this.ctx.translate(0, this.config.minute.height * minute);
+      this.ctx.translate(0, this.config.minute.height);
 
       // render minutes
       this.minuteView.render(minute);
-
-      // restore initial translate position
-      this.ctx.restore();
     }
   }
 }

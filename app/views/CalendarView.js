@@ -1,15 +1,16 @@
 import { Mediator } from '../utils/Mediator';
 import { Canvas } from '../utils/Canvas';
 import { Config } from '../utils/Config';
-import { SidebarView } from './SidebarView';
+import { RightSidebarView } from './RightSidebarView';
+import { LeftSidebarView } from './LeftSidebarView';
 import { WeekView } from './WeekView';
 
 export class CalendarView {
   constructor () {
     this.createContainers();
 
-    this.rightSidebarView = new SidebarView('right');
-    this.leftSidebarView = new SidebarView('left');
+    this.rightSidebarView = new RightSidebarView();
+    this.leftSidebarView = new LeftSidebarView();
 
     this.createCanvas();
     this.listenForRerender();
@@ -53,7 +54,7 @@ export class CalendarView {
 
   createCanvas () {
     this.canvas = Canvas.create('calendar', {
-      height: this.config.calendar.height,
+      height: this.config.calendar.height + 1,
       width: this.config.calendar.width
     });
 

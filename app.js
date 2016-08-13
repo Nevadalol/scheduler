@@ -9,7 +9,6 @@ new SchedulerView({
     // delay, before start moving
     // appointment, ms
     moveDelay: 150,
-    fps: 1000/60,
     weekCols: 1,
 
     startDate: new Date().getDate(),
@@ -53,7 +52,6 @@ new SchedulerView({
       sidebar: {
         borderColor: '#aabed0',
         font: '11px Segoe UI',
-        hourColor: '#c0c0c0',
         minuteColor: '#ddd',
         fontColor: '#bbb'
       }
