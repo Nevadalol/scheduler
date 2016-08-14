@@ -1,4 +1,4 @@
-import { AppointmentsCollection } from '../domain/AppointmentsCollection';
+import { Session } from '../domain/Session';
 import { _ } from '../../node_modules/underscore';
 import { MouseEvents } from '../utils/MouseEvents';
 import { Mediator } from '../utils/Mediator';
@@ -7,14 +7,14 @@ import { CalendarView } from './CalendarView';
 
 export class SchedulerView {
   constructor () {
-    this.appointments = AppointmentsCollection.getInstance();
+    this.collection = Session.getInstance();
     this.config = Config.getInstance();
     this.calendarView = new CalendarView();
     this.mouseEvents = new MouseEvents();
   }
 
   render () {
-    var container = document.querySelector(this.config.el);
+    var container = document.querySelector(this.config.container);
 
     // TODO
     // Call render before inserting into DOM
@@ -29,8 +29,8 @@ export class SchedulerView {
     t.setHours(3);
     t.setMinutes(20);
 
-    // mock appointments
-    var appointments = [{
+    // fake appointments
+    this.collection.add([{
       id: 1,
       title: 'Title',
       body: 'Body text here',
@@ -48,9 +48,7 @@ export class SchedulerView {
       timestamp: t,
       // 1 hour 20 minutes
       duration: 4800000
-    }];
-
-    _.defer(() => Mediator.publish('Appointment.add', appointments));
+    }]);
 
     return this;
   }

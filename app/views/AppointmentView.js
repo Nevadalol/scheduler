@@ -1,5 +1,5 @@
 import _ from '../../node_modules/underscore';
-import { AppointmentsCollection } from '../domain/AppointmentsCollection';
+import { Session } from '../domain/Session';
 import { Mediator } from '../utils/Mediator';
 import { Config } from '../utils/Config';
 import { Canvas } from '../utils/Canvas';
@@ -7,18 +7,18 @@ import { Util } from '../utils/Util';
 
 export class AppointmentView {
   constructor (params) {
-    this.collection = AppointmentsCollection.getInstance();
+    this.collection = Session.getInstance();
     this.config = Config.getInstance().calendar;
     this.ctx = Canvas.getCtx('calendar');
 
-    this.onMouseMove = this.getMoveHandler();
-    this.date = new Date(params.timestamp);
+    this.appointmentDate = new Date(params.timestamp);
     this.params = params;
 
     this.calculatePosition();
 
-    Mediator.subscribe('Calendar.mousedown', this.onMousedown, this);
-    Mediator.subscribe('Calendar.mouseup', this.onMouseup, this);
+    Mediator.subscribe('calendar:mousemove', this.getMousePosition, this);
+    Mediator.subscribe('calendar:mousedown', this.onMousedown, this);
+    Mediator.subscribe('calendar:mouseup', this.onMouseup, this);
   }
 
   render () {
@@ -26,46 +26,48 @@ export class AppointmentView {
     this.ctx.fillRect(this.position.x, this.position.y, this.position.width, this.position.height);
   }
 
-  moveAppointment (event) {
+  moveAppointment () {
     this.ctx.clearRect(this.position.x, this.position.y, this.position.width, this.position.height);
 
     if (this.isMoving) {
-      this.position.x += event.offsetX - this.position.x;
-      this.position.y += event.offsetY - this.position.y;
+      this.position.x += this.mousePosition.x - this.position.x;
+      this.position.y += this.mousePosition.y - this.position.y;
     }
 
-    Mediator.publish('Calendar.renderWeek');
+    Mediator.publish('calendar:render');
     _.invoke(this.collection.appointments, 'render');
+
+    this.animationFrame = requestAnimationFrame(this.moveAppointment.bind(this));
   }
 
-  onMousedown (e) {
-    if (this.isAppointmentSelected({x: e.offsetX, y: e.offsetY})) {
+  getMousePosition (coords) {
+    this.mousePosition = coords;
+  }
+
+  onMousedown (coords) {
+    if (this.isAppointmentSelected(coords)) {
       this.isMoving = true;
 
-      setTimeout(function () {
+      setTimeout(() => {
         if (this.isMoving) {
-          Mediator.publish('Appointment.moveStart', this.onMouseMove);
           this.hasMoved = true;
+          this.moveAppointment();
         }
-      }.bind(this), this.config.moveDelay);
+      }, this.config.moveDelay);
     }
   }
 
-  onMouseup (e) {
+  onMouseup (coords) {
     if (this.hasMoved) {
-      Mediator.publish('Appointment.moveStop', this.onMouseMove);
-      this.placeAppointment({x: e.offsetX, y: e.offsetY});
+      cancelAnimationFrame(this.animationFrame);
+      this.placeAppointment(coords);
       this.hasMoved = false;
     }
 
     this.isMoving = false;
 
-    Mediator.publish('Calendar.renderWeek');
+    Mediator.publish('calendar:render');
     _.invoke(this.collection.appointments, 'render');
-  }
-
-  getMoveHandler () {
-    return _.throttle(this.moveAppointment.bind(this), 1000/60);
   }
 
   placeAppointment (coords) {
@@ -77,9 +79,9 @@ export class AppointmentView {
   changeAppointmentTime (coords) {
     var time = Util.getTime(coords.x, coords.y);
 
-    this.date.setMinutes(time.minute);
-    this.date.setHours(time.hour);
-    this.date.setDate(time.day);
+    this.appointmentDate.setMinutes(time.minute);
+    this.appointmentDate.setHours(time.hour);
+    this.appointmentDate.setDate(time.day);
   }
 
   isAppointmentSelected (coords) {
@@ -91,9 +93,9 @@ export class AppointmentView {
 
   calculatePosition () {
     var time = {
-          minute: this.date.getMinutes(),
-          hour: this.date.getHours(),
-          date: this.date.getDate()
+          minute: this.appointmentDate.getMinutes(),
+          hour: this.appointmentDate.getHours(),
+          date: this.appointmentDate.getDate()
         },
         today = new Date().getDate();
 

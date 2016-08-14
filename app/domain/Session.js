@@ -2,21 +2,18 @@ import _ from '../../node_modules/underscore';
 import { AppointmentView } from '../views/AppointmentView';
 import { Mediator } from '../utils/Mediator';
 
-export class AppointmentsCollection {
+export class Session {
   constructor () {
     this.appointments = [];
-
-    Mediator.subscribe('Appointment.add', this.add, this);
   }
 
   static getInstance () {
     if (!this.instance) {
-      this.instance = new AppointmentsCollection();
+      this.instance = new Session();
     }
 
     return this.instance;
   }
-
 
   add (appointments) {
     this.appointments = this.appointments.concat(

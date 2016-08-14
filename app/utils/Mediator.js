@@ -20,8 +20,4 @@ export class Mediator {
       clb.apply(clb, args);
     });
   }
-
-  static clear () {
-    channels = {};
-  }
 }

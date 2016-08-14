@@ -8,12 +8,12 @@ import { WeekView } from './WeekView';
 export class CalendarView {
   constructor () {
     this.createContainers();
+    this.createCanvas();
 
     this.rightSidebarView = new RightSidebarView();
     this.leftSidebarView = new LeftSidebarView();
 
-    this.createCanvas();
-    this.listenForRerender();
+    Mediator.subscribe('calendar:render', this.renderWeek);
   }
 
   createContainers () {
@@ -42,10 +42,6 @@ export class CalendarView {
     this.el.appendChild(this.rightSidebarView.render().canvas);
 
     return this;
-  }
-
-  listenForRerender () {
-    Mediator.subscribe('Calendar.renderWeek', this.renderWeek);
   }
 
   renderWeek () {

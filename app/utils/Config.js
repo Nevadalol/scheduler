@@ -1,7 +1,7 @@
 import _ from '../../node_modules/underscore';
 
 const config = {
-  el: '#canvas-scheduler',
+  container: '#canvas-scheduler',
 
   calendar: {
     // delay, before start moving
