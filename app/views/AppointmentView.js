@@ -36,6 +36,7 @@ export class AppointmentView {
 
     Mediator.publish('calendar:render');
     Mediator.publish('appointment:render');
+    this.render();
 
     this.animationFrame = requestAnimationFrame(this.moveAppointment.bind(this));
   }
