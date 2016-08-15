@@ -4,12 +4,13 @@ const config = {
   container: '#canvas-scheduler',
 
   calendar: {
-    // delay, before start moving
-    // appointment, ms
-    moveDelay: 150,
     weekCols: 1,
 
     startDate: new Date().getDate(),
+
+    appointment: {
+      moveDelay: 150
+    },
 
     week: {
       dayCols: 3

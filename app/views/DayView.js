@@ -16,7 +16,7 @@ export class DayView {
   }
 
   renderHours () {
-    for (var hour = 0; hour < this.config.day.hourRows; ++hour) {
+    for (var hour = 0; hour <= this.config.day.hourRows; ++hour) {
       this.hourView.render();
     }
   }

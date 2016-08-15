@@ -19,12 +19,13 @@ export class CalendarView {
   }
 
   render () {
+    this.el.appendChild(this.canvas);
+
     // render calendar greed
     for (let week = 0; week < this.config.calendar.weekCols; ++week) {
       new WeekView(week).render();
     }
 
-    this.el.appendChild(this.canvas);
     new AppointmentsView();
 
     return this;

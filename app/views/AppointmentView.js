@@ -7,10 +7,9 @@ import { Util } from '../utils/Util';
 export class AppointmentView {
   constructor (model) {
     this.mouseEvents = MouseEvents.getInstance();
-    this.config = Config.getInstance().calendar;
     this.ctx = Canvas.getCtx('calendar');
 
-    this.model = model;
+    this.appointment = model;
 
     Mediator.subscribe('calendar:mousedown', this.onMousedown, this);
     Mediator.subscribe('calendar:mouseup', this.onMouseup, this);
@@ -18,14 +17,14 @@ export class AppointmentView {
   }
 
   render () {
-    let position = this.model.position;
+    let position = this.appointment.position;
 
-    this.ctx.fillStyle = this.model.params.headerColor;
+    this.ctx.fillStyle = this.appointment.params.headerColor;
     this.ctx.fillRect(position.x, position.y, position.width, position.height);
   }
 
   moveAppointment () {
-    let position = this.model.position;
+    let position = this.appointment.position;
 
     this.ctx.clearRect(position.x, position.y, position.width, position.height);
 
@@ -42,9 +41,9 @@ export class AppointmentView {
   }
 
   onMousedown (coords) {
-    if (this.model.isSelected(coords)) {
+    if (this.appointment.isSelected(coords)) {
       this.isMoving = true;
-      setTimeout(() => this.isMoving && this.moveAppointment(), this.config.moveDelay);
+      setTimeout(() => this.isMoving && this.moveAppointment(), Config.getInstance().calendar.appointment.moveDelay);
     }
   }
 
@@ -62,10 +61,10 @@ export class AppointmentView {
   }
 
   placeAppointment (coords) {
-    let position = this.model.position;
+    let position = this.appointment.position;
 
     this.ctx.clearRect(position.x, position.y, position.width, position.height);
-    this.model.changeAppointmentTime(Util.getTime(coords.x, coords.y));
-    this.model.calculatePosition();
+    this.appointment.changeAppointmentTime(Util.getTime(coords.x, coords.y));
+    this.appointment.calculatePosition();
   }
 }
