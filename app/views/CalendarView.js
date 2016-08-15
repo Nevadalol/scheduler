@@ -1,6 +1,7 @@
 import { Mediator } from '../utils/Mediator';
 import { Canvas } from '../utils/Canvas';
 import { Config } from '../utils/Config';
+import { AppointmentsView } from './AppointmentsView';
 import { WeekView } from './WeekView';
 
 export class CalendarView {
@@ -23,8 +24,8 @@ export class CalendarView {
       new WeekView(week).render();
     }
 
-    // append calendar greed
     this.el.appendChild(this.canvas);
+    new AppointmentsView();
 
     return this;
   }

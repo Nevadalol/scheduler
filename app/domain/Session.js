@@ -17,16 +17,7 @@ export class Session {
   }
 
   add (appointments) {
-    this.appointments = this.appointments.concat(
-      [].concat(appointments).map(this.createAppointment, this)
-    );
-  }
-
-  createAppointment (appointment) {
-    var instance = new AppointmentView(appointment);
-
-    _.defer(() => instance.render());
-
-    return instance;
+    this.appointments = this.appointments.concat([].concat(appointments));
+    Mediator.publish('appointments:add');
   }
 }

@@ -7,15 +7,13 @@ import { Canvas } from '../utils/Canvas';
 import { Util } from '../utils/Util';
 
 export class AppointmentView {
-  constructor (params) {
+  constructor (model) {
     this.mouseEvents = MouseEvents.getInstance();
     this.config = Config.getInstance().calendar;
     this.ctx = Canvas.getCtx('calendar');
 
-    this.appointmentDate = new Date(params.timestamp);
-    this.params = params;
-
-    this.calculatePosition();
+    this.model = model;
+    this.model.calculatePosition();
 
     Mediator.subscribe('calendar:mousedown', this.onMousedown, this);
     Mediator.subscribe('calendar:mouseup', this.onMouseup, this);
@@ -23,16 +21,21 @@ export class AppointmentView {
   }
 
   render () {
-    this.ctx.fillStyle = this.params.headerColor;
-    this.ctx.fillRect(this.position.x, this.position.y, this.position.width, this.position.height);
+    let position = this.model.position;
+
+    // TODO
+    this.ctx.fillStyle = '#2196F3';
+    this.ctx.fillRect(position.x, position.y, position.width, position.height);
   }
 
   moveAppointment () {
-    this.ctx.clearRect(this.position.x, this.position.y, this.position.width, this.position.height);
+    let position = this.model.position;
+
+    this.ctx.clearRect(position.x, position.y, position.width, position.height);
 
     if (this.isMoving) {
-      this.position.x += this.mouseEvents.mouseCoords.x - this.position.x;
-      this.position.y += this.mouseEvents.mouseCoords.y - this.position.y;
+      position.x += this.mouseEvents.mouseCoords.x - position.x;
+      position.y += this.mouseEvents.mouseCoords.y - position.y;
     }
 
     Mediator.publish('calendar:render');
@@ -42,7 +45,7 @@ export class AppointmentView {
   }
 
   onMousedown (coords) {
-    if (this.isAppointmentSelected(coords)) {
+    if (this.model.isSelected(coords)) {
       this.isMoving = true;
       setTimeout(() => this.isMoving && this.moveAppointment(), this.config.moveDelay);
     }
@@ -62,39 +65,10 @@ export class AppointmentView {
   }
 
   placeAppointment (coords) {
-    this.ctx.clearRect(this.position.x, this.position.y, this.position.width, this.position.height);
-    this.changeAppointmentTime(coords);
-    this.calculatePosition();
-  }
+    let position = this.model.position;
 
-  changeAppointmentTime (coords) {
-    var time = Util.getTime(coords.x, coords.y);
-
-    this.appointmentDate.setMinutes(time.minute);
-    this.appointmentDate.setHours(time.hour);
-    this.appointmentDate.setDate(time.day);
-  }
-
-  isAppointmentSelected (coords) {
-    return (this.position.y + this.position.height) > coords.y &&
-           (this.position.x + this.position.width) > coords.x &&
-           this.position.x < coords.x &&
-           this.position.y < coords.y;
-  }
-
-  calculatePosition () {
-    var time = {
-          minute: this.appointmentDate.getMinutes(),
-          hour: this.appointmentDate.getHours(),
-          date: this.appointmentDate.getDate()
-        },
-        today = new Date().getDate();
-
-    this.position = {
-      x: (time.date - today) * this.config.minute.width + 2,
-      y: time.hour * this.config.hour.height + (this.config.hour.height / 60) * time.minute,
-      width: this.config.minute.width - 4,
-      height: (this.params.duration / 600000) * this.config.minute.height
-    };
+    this.ctx.clearRect(position.x, position.y, position.width, position.height);
+    this.model.changeAppointmentTime(Util.getTime(coords.x, coords.y));
+    this.model.calculatePosition();
   }
 }
