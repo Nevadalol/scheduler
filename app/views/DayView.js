@@ -12,7 +12,6 @@ export class DayView {
   render () {
     this.renderBorder();
     this.renderHours();
-    
   }
 
   renderHours () {
