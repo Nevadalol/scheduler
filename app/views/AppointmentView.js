@@ -1,5 +1,3 @@
-import _ from '../../node_modules/underscore';
-import { Session } from '../domain/Session';
 import { MouseEvents } from '../utils/MouseEvents';
 import { Mediator } from '../utils/Mediator';
 import { Config } from '../utils/Config';
@@ -13,7 +11,6 @@ export class AppointmentView {
     this.ctx = Canvas.getCtx('calendar');
 
     this.model = model;
-    this.model.calculatePosition();
 
     Mediator.subscribe('calendar:mousedown', this.onMousedown, this);
     Mediator.subscribe('calendar:mouseup', this.onMouseup, this);
@@ -23,8 +20,7 @@ export class AppointmentView {
   render () {
     let position = this.model.position;
 
-    // TODO
-    this.ctx.fillStyle = '#2196F3';
+    this.ctx.fillStyle = this.model.params.headerColor;
     this.ctx.fillRect(position.x, position.y, position.width, position.height);
   }
 

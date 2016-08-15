@@ -38,19 +38,13 @@ export class SchedulerView {
 
     Session.getInstance().add([{
       id: 1,
-      title: 'Title',
-      body: 'Body text here',
       headerColor: '#1976D2',
-      bodyColor: '#2196F3',
       timestamp: today,
       // 1 hour 20 minutes
       duration: 4800000
     }, {
       id: 2,
-      title: 'Title',
-      body: 'Body text here',
-      headerColor: '#1976D2',
-      bodyColor: '#2196F3',
+      headerColor: '#f1c40f',
       timestamp: t,
       // 1 hour 20 minutes
       duration: 4800000

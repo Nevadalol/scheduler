@@ -1,5 +1,3 @@
-import _ from '../../node_modules/underscore';
-import { AppointmentView } from '../views/AppointmentView';
 import { Appointment } from '../domain/Appointment';
 import { Mediator } from '../utils/Mediator';
 
@@ -17,7 +15,9 @@ export class Session {
   }
 
   add (appointments) {
-    this.appointments = this.appointments.concat([].concat(appointments));
+    let collection = [].concat(appointments).map((model) => new Appointment(model));
+
+    this.appointments = this.appointments.concat(collection);
     Mediator.publish('appointments:add');
   }
 }
