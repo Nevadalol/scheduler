@@ -1,5 +1,6 @@
 import _ from '../../node_modules/underscore';
 import { AppointmentView } from '../views/AppointmentView';
+import { Appointment } from '../domain/Appointment';
 import { Mediator } from '../utils/Mediator';
 
 export class Session {

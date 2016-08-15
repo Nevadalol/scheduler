@@ -5,11 +5,19 @@ import { Canvas } from './Canvas';
 export class MouseEvents {
   constructor () {
     this.config = Config.getInstance();
-    this.attachEvents();
   }
 
-  attachEvents () {
-    Canvas.get('calendar').addEventListener('mousemove', this.onMouseMove, false);
+  static getInstance () {
+    if (!this.instance) {
+      this.instance = new MouseEvents();
+    }
+
+    return this.instance;
+  }
+
+  addEventListeners () {
+    // TODO: leak
+    Canvas.get('calendar').addEventListener('mousemove', this.onMouseMove.bind(this), false);
     Canvas.get('calendar').addEventListener('mousedown', this.onMouseDown, false);
     // TODO: attach to document/body
     Canvas.get('calendar').addEventListener('mouseup', this.onMouseUp, false);
@@ -22,7 +30,7 @@ export class MouseEvents {
   }
 
   onMouseMove (e) {
-    Mediator.publish('calendar:mousemove', {x: e.offsetX, y: e.offsetY});
+    this.mouseCoords = {x: e.offsetX, y: e.offsetY};
   }
 
   onMouseDown (e) {

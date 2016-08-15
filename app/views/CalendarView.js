@@ -1,45 +1,30 @@
 import { Mediator } from '../utils/Mediator';
 import { Canvas } from '../utils/Canvas';
 import { Config } from '../utils/Config';
-import { RightSidebarView } from './RightSidebarView';
-import { LeftSidebarView } from './LeftSidebarView';
 import { WeekView } from './WeekView';
 
 export class CalendarView {
   constructor () {
-    this.createContainers();
+    this.config = Config.getInstance();
+    this.createEl();
     this.createCanvas();
-
-    this.rightSidebarView = new RightSidebarView();
-    this.leftSidebarView = new LeftSidebarView();
 
     Mediator.subscribe('calendar:render', this.renderWeek);
   }
 
-  createContainers () {
-    this.canvasContainer = document.createElement('div');
+  createEl () {
     this.el = document.createElement('div');
-    this.config = Config.getInstance();
-
-    this.canvasContainer.id = 'canvas-container';
-    this.el.id = 'calendar';
+    this.el.id = 'canvas-container';
   }
 
   render () {
-    // render left sidebar
-    this.el.appendChild(this.leftSidebarView.render().canvas);
-
     // render calendar greed
     for (let week = 0; week < this.config.calendar.weekCols; ++week) {
       new WeekView(week).render();
     }
 
     // append calendar greed
-    this.canvasContainer.appendChild(this.canvas);
-    this.el.appendChild(this.canvasContainer);
-
-    // render right sidebar
-    this.el.appendChild(this.rightSidebarView.render().canvas);
+    this.el.appendChild(this.canvas);
 
     return this;
   }
